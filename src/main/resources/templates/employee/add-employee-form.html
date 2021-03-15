@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+
+    <title>Save Employee</title>
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <h3>Employee Directory</h3>
+    <hr/>
+
+    <p class="h4 mb-4">Save Employee</p>
+
+    <form action="#" th:action="@{/crm/save}"
+          th:object="${employee}" method="POST"
+          enctype="multipart/form-data">
+
+        <label for="firstname">Your first name</label>
+        <input type="text" th:field="*{firstName}"
+               class="form-control mb-4 col-4" placeholder="First name" id="firstname"/>
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('firstName')}"
+           th:errors="*{firstName}">first name
+            error</p>
+
+        <label for="lastname">Your last name</label>
+        <input type="text" th:field="*{lastName}"
+               class="form-control mb-4 col-4" placeholder="Last name" id="lastname">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('lastName')}"
+           th:errors="*{lastName}">last name
+            error</p>
+
+        <label for="email">Your email</label>
+        <input type="text" th:field="*{email}"
+               class="form-control mb-4 col-4" placeholder="Email" id="email">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('email')}"
+           th:errors="*{email}">email
+            error</p>
+
+        <p id="size"></p>
+        <label for="fileImage">Your Photo</label>
+        <input type="file" name="fileImage" accept="image/png, image/jpeg" id="fileImage"
+               class="form-control border-0 mb-4 col-4">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('photo')}"
+           th:errors="*{photo}">photo error</p>
+
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr/>
+    <a th:href="@{/crm}">Back to Employees List</a>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+<script>
+    let MAX_FILE_SIZE = 4 * 1024 * 1024; // 4
+
+    $(document).ready(function() {
+        $('#fileImage').change(function() {
+        let fileSize = this.files[0].size;
+        if (fileSize > MAX_FILE_SIZE) {
+            this.setCustomValidity("File must not exceed 4 MB!");
+            this.reportValidity();
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+    });
+</script>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Update Employee</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Employee Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Update Employee</p>
+
+    <form action="#" th:action="@{/crm/update}"
+          th:object="${employee}" method="POST"
+          enctype="multipart/form-data">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label for="firstname">Your first name</label>
+        <input type="text" th:field="*{firstName}"
+               class="form-control mb-4 col-4" placeholder="First name" id="firstname">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('firstName')}"
+           th:errors="*{firstName}">first name
+            error</p>
+
+        <label for="lastname">Your last name</label>
+        <input type="text" th:field="*{lastName}"
+               class="form-control mb-4 col-4" placeholder="Last name" id="lastname">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('lastName')}"
+           th:errors="*{lastName}">last name
+            error</p>
+
+        <label for="email">Your email</label>
+        <input type="text" th:field="*{email}"
+               class="form-control mb-4 col-4" placeholder="Email" id="email">
+        <p style="color:red; font-weight: bold" th:if="${#fields.hasErrors('email')}"
+           th:errors="*{email}">email
+            error</p>
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr>
+    <a th:href="@{/crm}">Back To Employees List</a>
+
+</div>
+</body>
+
+</html>

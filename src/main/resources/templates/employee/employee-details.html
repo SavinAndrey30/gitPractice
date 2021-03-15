@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Employeee Details</title>
+    <link rel="stylesheet" type="text/css" href="../css/employee-details.css">
+</head>
+
+<body>
+
+<div class="details-container">
+    <h1>Employee Details</h1>
+    <h3>Have fun. Hover over the image below:</h3>
+
+    <div th:object="${employee}" class="employee-card">
+        <div class="employee-card-inner">
+            <div class="employee-card-front">
+                <img class="employee-photo" th:alt="employee-photo"
+                     th:src="@{'/home/employee-photos/' + ${employee.id} + '/' + ${employee.photo}}"
+                >
+            </div>
+
+            <div class="employee-card-back">
+                <h2>Employee details</h2>
+                First Name: <span th:text="${employee.firstName}"/>
+                <br>
+                Last Name: <span th:text="${employee.lastName}"/>
+            </div>
+        </div>
+    </div>
+    <a class="employee-details-link" th:href="@{/}">Back to Home
+        Page</a>
+</div>
+
+
+</body>
+
+</html>

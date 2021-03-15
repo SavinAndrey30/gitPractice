@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <title>CRM</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>CRM</h3>
+    <div>
+    Hello, <span sec:authentication="name"></span>
+        <br />
+    Your roles: <span sec:authentication="principal.authorities"></span>
+        <br />
+    <span sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">
+        This means you can do whatever you want with the list of employees and also see other users, enjoy!
+    </span>
+    </div>
+
+    <hr />
+
+    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}"
+       class="btn btn-primary btn-sm mb-3">
+        Show CRM Users
+    </a>
+
+    <a sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')" th:href="@{/crm/showFormForAdd}"
+       class="btn btn-primary btn-sm mb-3">
+        Add Employee
+    </a>
+
+    <form th:action="@{/crm/search}" class="form-inline">
+
+        <input class="form-control mr-sm-2 mb-3" type="search" name="employeeName" placeholder="Search by name"/>
+
+        <button class="btn btn-success mb-3" type="submit">Search</button>
+        <a th:href="@{/crm}" role="button" class="btn btn-secondary ml-2 mb-3">Reset</a>
+
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>
+                <a
+                        th:href="@{'/crm/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}">First
+                    Name</a>
+            </th>
+            <th>
+                <a th:href="@{'/crm/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}">Last
+                    Name</a>
+            </th>
+            <th>
+                <a th:href="@{'/crm/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">Email
+                </a>
+            </th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempEmployee : ${employees}" data-th-id="${tempEmployee.id}">
+
+            <td th:text="${tempEmployee.firstName}"/>
+            <td th:text="${tempEmployee.lastName}"/>
+            <td th:text="${tempEmployee.email}"/>
+
+            <div class="row">
+
+                <div class="col-small">
+                    <td>
+
+                        <a th:href="@{/crm/showEmployeeDetails(id=${tempEmployee.id})}"
+                           class="btn btn-info btn-sm ml-3 mr-1">
+                            Photo
+                        </a>
+
+                        <a sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"
+                           th:href="@{/crm/showFormForUpdate(id=${tempEmployee.id})}"
+                           class="btn btn-info btn-sm mr-1">
+                            Update
+                        </a>
+
+                        <a sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"
+                           th:href="@{/crm/delete(id=${tempEmployee.id})}"
+                           class="btn btn-danger btn-sm" onclick="if
+                   (!confirm('Are you sure you want to delete the employee')) return false;">
+                            Delete
+                        </a>
+                    </td>
+                </div>
+            </div>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${totalPages > 1}">
+        <div class="row col-sm-10">
+            <div class="col-sm-2">
+                Total Rows: [[${totalItems}]]
+            </div>
+            <div class="col-sm-3">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}"
+                           th:href="@{'/crm/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>
+					</span>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/crm/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                <span th:unless="${currentPage < totalPages}">Next</span>
+            </div>
+
+            <div class="col-sm-1">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/crm/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    Last</a>
+                <span th:unless="${currentPage < totalPages}">Last</span>
+            </div>
+        </div>
+    </div>
+
+    <form action="#" th:action="@{/logout}"
+          method="POST">
+
+        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2"/>
+
+    </form>
+</div>
+
+</body>
+</html>
