@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
-
+//add comment here for git practice
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory("home/employee-photos", registry);
